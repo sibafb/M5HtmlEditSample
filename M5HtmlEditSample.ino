@@ -31,7 +31,7 @@ void loop() {
    et_status = APEditing(edit_string);
 
    if(et_status == Changed){
-      M5LcdPrint( String(ssid_string)+"に接続し\n"+ ip_string +"に接続してください\n"+"Edit String:\n"+edit_string);
+      M5LcdPrint( "SSID:" + String(ssid_string)+"に接続し\n"+ ip_string +"に接続してください\n"+"Edit String:\n"+edit_string);
    }
    /* 編集終了したら電源OFF */
    if(et_status == EditFinished){

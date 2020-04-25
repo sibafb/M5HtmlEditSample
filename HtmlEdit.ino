@@ -28,7 +28,7 @@ bool InitHtmlEdit(String& ssid_in ,String& ip_string){
 }
 
 EditStatus APEditing(String& edit_string){
-  WiFiClient client = server.available();   // listen for incoming clients
+  WiFiClient client = server.available();  
 
   String buff = "";
 
@@ -64,19 +64,18 @@ EditStatus APEditing(String& edit_string){
         } else if (c != '\r') {  // if you got anything else but a carriage return character,
           currentLine += c;      // add it to the end of the currentLine
           forrequest += c;
-
-
+        }
         if (forrequest.indexOf("edit_string=") >= 0) {
           /* "edit_string="以下の値を buffに書き込み　*/
           buff="";
           GetHtmlRequest( "edit_string=", buff, forrequest);
           
-          /* buffの内容がedit_stringと違っていたら書き換え＆再表示 */
-          if(buff.compareTo(edit_string) != 0){
+          /* buffの内容が空白でなく、edit_stringと違っていたら書き換え＆再表示 */
+          if(buff.compareTo(edit_string) != 0 && buff.compareTo("") != 0){
             /* 書き換え処理 */
             edit_string = buff;
             buff="";//再利用できるようにするため、buffを元に戻す
-            return Changed;
+            M5LcdPrint( "SSID:" + String(ssid_string) + "に接続し\n"+ ip_string +"に接続してください\n"+"Edit String:\n"+edit_string);  //ここでreturn返すとclientとの接続が切れるので直接書き換え
           } 
         }
         if (forrequest.indexOf("edit_end=") >= 0) {
@@ -88,7 +87,7 @@ EditStatus APEditing(String& edit_string){
             return EditFinished;
           }
         }
-        }
+
       }
 
       
